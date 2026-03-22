@@ -1,4 +1,5 @@
 import { Form, Head } from '@inertiajs/react';
+import { useState } from 'react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import TextLink from '@/components/text-link';
@@ -6,18 +7,36 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import APPLayout from '@/layouts/app-layout';
-import { login, register } from '@/routes';
+import { register } from '@/routes';
 import type { BreadcrumbItem } from '@/types';
+
+interface Area {
+    id: number;
+    name: string;
+    code: string;
+}
+
+interface RegisterProps {
+    areas: Area[];
+}
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Register',
-        href: login(),
+        href: register(),
     },
 ];
 
-export default function Register() {
+export default function Register({ areas }: RegisterProps) {
+    const [areaId, setAreaId] = useState<string>('');
     return (
         <APPLayout breadcrumbs={breadcrumbs}
         // title="Create an account"
@@ -86,11 +105,36 @@ export default function Register() {
                                 </div>
 
                                 <div className="grid gap-2">
+                                    <Label htmlFor="area_id">Area</Label>
+                                    <Select value={areaId} onValueChange={setAreaId}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select an area" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {areas.map((area) => (
+                                                <SelectItem
+                                                    key={area.id}
+                                                    value={area.id.toString()}
+                                                >
+                                                    {area.name} ({area.code})
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <Input
+                                        type="hidden"
+                                        name="area_id"
+                                        value={areaId}
+                                    />
+                                    <InputError message={errors.area_id} />
+                                </div>
+
+                                <div className="grid gap-2">
                                     <Label htmlFor="password">Password</Label>
                                     <PasswordInput
                                         id="password"
                                         required
-                                        tabIndex={3}
+                                        tabIndex={4}
                                         autoComplete="new-password"
                                         name="password"
                                         placeholder="Password"
@@ -105,7 +149,7 @@ export default function Register() {
                                     <PasswordInput
                                         id="password_confirmation"
                                         required
-                                        tabIndex={4}
+                                        tabIndex={5}
                                         autoComplete="new-password"
                                         name="password_confirmation"
                                         placeholder="Confirm password"
@@ -118,19 +162,12 @@ export default function Register() {
                                 <Button
                                     type="submit"
                                     className="mt-2 w-full"
-                                    tabIndex={5}
+                                    tabIndex={6}
                                     data-test="register-user-button"
                                 >
                                     {processing && <Spinner />}
                                     Create account
                                 </Button>
-                            </div>
-
-                            <div className="text-center text-sm text-muted-foreground">
-                                Already have an account?{' '}
-                                <TextLink href={login()} tabIndex={6}>
-                                    Log in
-                                </TextLink>
                             </div>
                         </>
                     )}

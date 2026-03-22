@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('bonuses', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id')->constraint('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('type', 20);
             $table->decimal('amount', 15, 2);
             $table->string('description')->nullable();

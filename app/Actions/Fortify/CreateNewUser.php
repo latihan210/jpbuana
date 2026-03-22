@@ -4,8 +4,10 @@ namespace App\Actions\Fortify;
 
 use App\Concerns\PasswordValidationRules;
 use App\Concerns\ProfileValidationRules;
+use App\Models\Area;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
@@ -22,13 +24,16 @@ class CreateNewUser implements CreatesNewUsers
         Validator::make($input, [
             ...$this->profileRules(),
             'password' => $this->passwordRules(),
+            'area_id' => ['required', 'integer', Rule::exists(Area::class, 'id')],
+            'phone' => ['nullable', 'string', 'max:20'],
         ])->validate();
 
         return User::create([
             'name' => $input['name'],
             'username' => $input['username'],
             'email' => $input['email'],
-            'area_id' => 1,
+            'area_id' => $input['area_id'],
+            'phone' => $input['phone'] ?? null,
             'password' => $input['password'],
         ]);
     }

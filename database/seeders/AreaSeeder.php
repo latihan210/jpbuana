@@ -13,8 +13,17 @@ class AreaSeeder extends Seeder
      */
     public function run(): void
     {
-        Area::create(['name' => 'Area 1', 'code' => 'W1',]);
-        Area::create(['name' => 'Area 2', 'code' => 'W2',]);
-        Area::create(['name' => 'Pusat', 'code' => 'PST',]);
+        Area::updateOrCreate(
+            ['code' => 'W1'],
+            ['name' => 'Area 1']
+        );
+        Area::updateOrCreate(
+            ['code' => 'W2'],
+            ['name' => 'Area 2']
+        );
+        Area::updateOrCreate(
+            ['code' => 'PST'],
+            ['name' => 'Pusat']
+        );
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Area;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,14 +14,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Run area seeder first
+        $this->call(AreaSeeder::class);
 
-        User::create([
-            'username' => 'masteradmin',
-            'name'     => 'Yosep Solahudin',
-            'email'    => 'masteradmin@example.com',
-            'password' => Hash::make('21042002'), // Password Anda nanti
-            'area_id'  => 1, // Pastikan tabel areas sudah ada isinya
-        ]);
+        // Create master admin user
+        $area = Area::where('code', 'PST')->first();
+
+        User::updateOrCreate(
+            ['username' => 'masteradmin'],
+            [
+                'name'     => 'Master Admin',
+                'email'    => 'admin@example.com',
+                'password' => Hash::make(env('ADMIN_DEFAULT_PASSWORD', 'password')),
+                'area_id'  => $area?->id ?? 1,
+                'status'   => 'active',
+                'phone'    => null,
+            ]
+        );
+
+        // Uncomment to create test users
+        // User::factory(10)->create(['area_id' => $area?->id ?? 1]);
     }
 }

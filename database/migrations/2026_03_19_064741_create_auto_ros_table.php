@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('auto_ros', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id')->constraint('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->decimal('amount', 15, 2);
             $table->string('period')->nullable();
             $table->text('description')->nullable();

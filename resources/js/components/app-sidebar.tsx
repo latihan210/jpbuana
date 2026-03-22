@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, Home, UserPlus } from 'lucide-react';
+import { BookOpen, FolderGit2, Home, Settings, User, UserPlus } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard, register } from '@/routes';
 import type { NavItem } from '@/types';
+import { Separator } from './ui/separator';
 
 const mainNavItems: NavItem[] = [
     {
@@ -22,24 +23,56 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: Home,
     },
+];
+
+const mainNavItemsWithHeader: NavItem[] = [
     {
-        title: 'Tambah Member',
-        href: register(),
-        icon: UserPlus,
+        header: 'Members',
+        title: 'Data Member',
+        href: '#',
+        icon: User,
+        isActive: false,
+        items: [
+            {
+                title: 'Tambah Member',
+                href: register(),
+            },
+            {
+                title: 'List Member',
+                href: '#',
+            },
+            {
+                title: 'List Group',
+                href: '#',
+            },
+        ],
     },
+    {
+        header: 'Perusahaan',
+        title: 'Master Settings',
+        href: '#',
+        icon: Settings,
+        isActive: false,
+        items: [
+            {
+                title: 'Data Perusahaan',
+                href: '#',
+            },
+        ],
+    }
 ];
 
 const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
+    // {
+    //     title: 'Repository',
+    //     href: 'https://github.com/laravel/react-starter-kit',
+    //     icon: FolderGit2,
+    // },
+    // {
+    //     title: 'Documentation',
+    //     href: 'https://laravel.com/docs/starter-kits#react',
+    //     icon: BookOpen,
+    // },
 ];
 
 export function AppSidebar() {
@@ -59,6 +92,8 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
+                <Separator />
+                <NavMain items={mainNavItemsWithHeader} />
             </SidebarContent>
 
             <SidebarFooter>

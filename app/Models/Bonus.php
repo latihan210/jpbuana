@@ -3,27 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class AutoRo extends Model
+class Bonus extends Model
 {
-    protected $table = 'auto_ros';
-
     protected $fillable = [
         'user_id',
+        'type',
         'amount',
-        'period',
         'description',
+        'status',
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
     ];
 
-    /**
-     * Get the user this auto RO belongs to
-     */
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

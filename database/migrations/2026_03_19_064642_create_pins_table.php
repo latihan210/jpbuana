@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pins', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id')->constraint('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('code', 10)->unique();
             $table->string('type', 20)->default('member');
             $table->enum('status', ['available', 'used', 'expired'])->default('available');

@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
-#[Fillable(['area_id', 'name', 'username', 'email', 'password', 'phone', 'sponsor_id', 'status', 'parent_id', 'position', 'status'])]
+#[Fillable(['area_id', 'name', 'username', 'email', 'password', 'phone', 'sponsor_id', 'parent_id', 'position', 'status'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -29,6 +29,8 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
+            'balance' => 'decimal:2',
+            'point' => 'decimal:2',
         ];
     }
 
@@ -51,8 +53,29 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(User::class, 'sponsor_id');
     }
+
     public function downline()
     {
         return $this->hasMany(Pin::class, 'sponsor_id');
+    }
+
+    public function pins()
+    {
+        return $this->hasMany(Pin::class, 'user_id');
+    }
+
+    public function usedPins()
+    {
+        return $this->hasMany(Pin::class, 'used_by');
+    }
+
+    public function bonuses()
+    {
+        return $this->hasMany(Bonus::class);
+    }
+
+    public function autoRos()
+    {
+        return $this->hasMany(AutoRo::class);
     }
 }
