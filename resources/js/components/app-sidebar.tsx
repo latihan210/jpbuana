@@ -16,6 +16,7 @@ import {
 import { dashboard, register } from '@/routes';
 import type { NavItem } from '@/types';
 import { Separator } from './ui/separator';
+import { index as usersIndex } from '@/routes/users';
 
 const mainNavItems: NavItem[] = [
     {
@@ -39,7 +40,7 @@ const mainNavItemsWithHeader: NavItem[] = [
             },
             {
                 title: 'List Member',
-                href: '#',
+                href: usersIndex().url,
             },
             {
                 title: 'List Group',
